@@ -1,77 +1,96 @@
 import React, { useEffect, useState } from 'react';
 import MonsterCard, { Monster } from './components/MonsterCard';
+import SliderFilter from './components/SliderFilter';
+import PostFetchCheckBoxFilter from './components/PostFetchCheckBoxFilter';
 
 export default function App() {
-  // Состояние для хранения списка из 20 монстров
-  const [monsters, setMonsters] = useState<Monster[]>([]);
-  // Состояние загрузки, чтобы показать спиннер
-  const [isLoading, setIsLoading] = useState(true);
-  const [monster] = useState<Monster[]>([]);
+  // --- СОСТОЯНИЕ (State) ---
 
-  // 2. useEffect срабатывает один раз при запуске компонента (пустой массив [])
+  // Храним список монстров
+  const [monsters, setMonsters] = useState<Monster[]>([]);
+  // Храним текущее значение CR (из фильтра)
+  const [selectedCr, setSelectedCr] = useState('1');
+  const [selectedSpeedType, setSelectedSpeedType] = useState('');
+  // Статус загрузки
+  const [isLoading, setIsLoading] = useState(false);
+  // Статус ошибки
+  const [error, setError] = useState<string | null>(null);
+
+  // --- ЛОГИКА (Logic) ---
+
+  // Функция для запроса к API
+  // Она будет срабатывать каждый раз, когда меняется selectedCr
   useEffect(() => {
-    const fetchAndShuffleMonsters = async () => {
+    const fetchMonsters = async () => {
       setIsLoading(true);
+      setError(null);
+
       try {
-        // Запрашиваем сразу 100 монстров, чтобы было из чего выбирать
-        const response = await fetch('https://api.open5e.com/monsters/?limit=100');
+        // Используем Open5e API с фильтром по challenge_rating
+        const response = await fetch(`https://api.open5e.com/monsters/?cr=${selectedCr}`);
+
+        if (!response.ok) throw new Error('Ошибка при загрузке данных');
+
         const data = await response.json();
 
-        // Получаем массив результатов
-        const allMonsters = data.results;
+        let filteredItems = data.results;
 
-        // 3. Магия перемешивания (простой способ перемешать массив)
-        const shuffled = [...allMonsters].sort(() => 0.5 - Math.random());
-
-        // 4. Берем первые 20 элементов из перемешанного массива
-        const selectedTwenty = shuffled.slice(0, 20);
-
-        // Сохраняем их в состояние
-        setMonsters(selectedTwenty);
-      } catch (error) {
-        console.error('Ошибка при загрузке монстров:', error);
+        if (selectedSpeedType.length !== 0) {
+          filteredItems = data.results.filter((monster: Monster) => {
+            return monster.speed.hasOwnProperty(selectedSpeedType.toLowerCase());
+          });
+        }
+        setMonsters(filteredItems || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Произошла ошибка');
       } finally {
-        // Выключаем загрузку в любом случае
         setIsLoading(false);
       }
     };
 
-    fetchAndShuffleMonsters();
-  }, []);
+    fetchMonsters();
+  }, [selectedCr, selectedSpeedType]); // <--- Это "зависимость": useEffect перезапустится при изменении CR
 
-  // Отображение загрузки
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500"></div>
-      </div>
-    );
-  }
+  // --- ВЕРСТКА (UI) ---
 
-  // Главный рендер
   return (
     <div className="min-h-screen bg-slate-900 text-white p-8">
-      <h1 className="text-3xl mb-8">Поиск Монстров</h1>
+      {/* Шапка */}
+      <header className="max-w-7xl mx-auto mb-10 text-center">
+        <h1 className="text-5xl font-serif font-bold text-amber-500 mb-4 uppercase tracking-tighter">Bestiary 5e</h1>
+        <p className="text-slate-400">Найди идеальное испытание для своих героев</p>
+      </header>
+      {/* Секция фильтров */}
+      <section className="max-w-7xl mx-auto mb-12 flex justify-center">
+        <SliderFilter onFinalChange={(val: string) => setSelectedCr(val)} />
+      </section>
+      <section className="max-w-7xl mx-auto mb-12 flex justify-center">
+        <PostFetchCheckBoxFilter onFinalChange={(val: string) => setSelectedSpeedType(val)} />
+      </section>
 
-      {/* Зона фильтров */}
-      {/*<div className="mb-8 p-4 bg-slate-800/50 rounded-xl border border-slate-700">*/}
-      {/*    <CRSlider*/}
-      {/*        initialValue={filters.cr}*/}
-      {/*        onChange={handleCrChange}*/}
-      {/*    />*/}
-      {/*    /!* Сюда потом добавишь <TypeFilter /> *!/*/}
-      {/*</div>*/}
-
-      {/* Зона контента */}
-      {isLoading ? (
-        <p>Загрузка...</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {monsters.map((m) => (
-            <MonsterCard key={m.slug} data={m} />
-          ))}
-        </div>
-      )}
+      {/* Основной контент */}
+      <main className="max-w-7xl mx-auto">
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-amber-500 mb-4"></div>
+            <p className="text-amber-500 animate-pulse">Магия поиска в процессе...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center p-10 bg-red-900/20 border border-red-900 rounded-xl">
+            <p className="text-red-400">⚠️ {error}</p>
+          </div>
+        ) : monsters.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {monsters.map((monster) => (
+              <MonsterCard key={monster.slug} data={monster} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <p className="text-slate-500 text-xl font-serif">Монстры с таким уровнем угрозы не найдены в свитках...</p>
+          </div>
+        )}
+      </main>
     </div>
   );
 }

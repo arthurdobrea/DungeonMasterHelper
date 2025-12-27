@@ -37,7 +37,11 @@ interface MonsterCardProps {
   data: Monster;
 }
 interface Speed {
+  hover: number;
+  fly: number;
+  climb: number;
   walk: number;
+  burrow: number;
 }
 interface Actions {
   name: string;
