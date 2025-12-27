@@ -151,3 +151,13 @@ dist-ssr
 # Vite logs files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+/.vite/deps/_metadata.json
+/.vite/deps/chunk-XSVNIYHM.js
+/.vite/deps/chunk-XSVNIYHM.js.map
+/.vite/deps/package.json
+/.vite/deps/react.js
+/.vite/deps/react.js.map
+/.vite/deps/react-dom_client.js
+/.vite/deps/react-dom_client.js.map
+/.vite/deps/react_jsx-dev-runtime.js
+/.vite/deps/react_jsx-dev-runtime.js.map
