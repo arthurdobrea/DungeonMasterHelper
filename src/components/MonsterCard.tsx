@@ -71,7 +71,7 @@ export default function MonsterCard({ data }: MonsterCardProps) {
       <div className="p-5">
         {/* Заголовок и CR */}
         <div className="flex justify-between items-start mb-2">
-          <h2 className="text-xl font-bold text-white leading-tight truncate pr-2" title={data.name}>
+          <h2 className="text-xl font-serif font-bold text-white leading-tight truncate pr-2" title={data.name}>
             {data.name}
           </h2>
 
@@ -98,18 +98,10 @@ export default function MonsterCard({ data }: MonsterCardProps) {
               <span className="text-white font-mono font-bold">{data.armor_class}</span>
             </div>
           </div>
-          <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-xs text-slate-500 font-bold uppercase mb-1">Speed</span>
-            <div className="flex items-center gap-1">
-              <span className="text-slate-400 text-sm">🛡️</span>
-              <span className="text-white font-mono font-bold">{data.speed.walk}</span>
-            </div>
-          </div>
-
           {/* --- 1. ОСНОВНЫЕ ХАРАКТЕРИСТИКИ (СЕТКА 3x2) --- */}
           {/* Strength (Твой пример) */}
           <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">STR</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">Strength</span>
             <div className="flex items-center gap-1">
               <span className="text-slate-400 text-sm">{STAT_ICONS.strength}</span>
               <span className="text-white font-mono font-bold">{data.strength}</span>
@@ -118,7 +110,7 @@ export default function MonsterCard({ data }: MonsterCardProps) {
 
           {/* Dexterity */}
           <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">DEX</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">Dexterity</span>
             <div className="flex items-center gap-1">
               <span className="text-slate-400 text-sm">{STAT_ICONS.dexterity}</span>
               <span className="text-white font-mono font-bold">{data.dexterity}</span>
@@ -127,7 +119,7 @@ export default function MonsterCard({ data }: MonsterCardProps) {
 
           {/* Constitution */}
           <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">CON</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">Constitution</span>
             <div className="flex items-center gap-1">
               <span className="text-slate-400 text-sm">{STAT_ICONS.constitution}</span>
               <span className="text-white font-mono font-bold">{data.constitution}</span>
@@ -136,7 +128,7 @@ export default function MonsterCard({ data }: MonsterCardProps) {
 
           {/* Intelligence */}
           <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">INT</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">Intelligence</span>
             <div className="flex items-center gap-1">
               <span className="text-slate-400 text-sm">{STAT_ICONS.intelligence}</span>
               <span className="text-white font-mono font-bold">{data.intelligence}</span>
@@ -145,7 +137,7 @@ export default function MonsterCard({ data }: MonsterCardProps) {
 
           {/* Wisdom */}
           <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">WIS</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">Wisdom</span>
             <div className="flex items-center gap-1">
               <span className="text-slate-400 text-sm">{STAT_ICONS.wisdom}</span>
               <span className="text-white font-mono font-bold">{data.wisdom}</span>
@@ -154,7 +146,7 @@ export default function MonsterCard({ data }: MonsterCardProps) {
 
           {/* Charisma */}
           <div className="bg-slate-900/50 p-2 rounded-lg flex flex-col items-center border border-slate-700/50">
-            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">CHA</span>
+            <span className="text-[10px] text-slate-500 font-bold uppercase mb-1">Charisma</span>
             <div className="flex items-center gap-1">
               <span className="text-slate-400 text-sm">{STAT_ICONS.charisma}</span>
               <span className="text-white font-mono font-bold">{data.charisma}</span>

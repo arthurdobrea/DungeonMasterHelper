@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+/* 1. Импортируем Inter (для текстов) и Cinzel (для заголовков) с поддержкой кириллицы */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel:wght@700&display=swap');
+
+/* 2. Переопределяем стандартные шрифты Tailwind */
+@theme {
+    /* --font-sans - это стандартный шрифт (класс font-sans) */
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+    /* --font-serif - добавим красивый фэнтези шрифт (класс font-serif) */
+    --font-serif: "Cinzel", ui-serif, Georgia, serif;
+}
